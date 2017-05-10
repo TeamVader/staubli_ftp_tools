@@ -1,0 +1,12 @@
+c:\users\alex\documents\visual studio 2012\Projects\FTPClient\FTPClient\bin\Debug\FTPClient.exe.config
+c:\users\alex\documents\visual studio 2012\Projects\FTPClient\FTPClient\bin\Debug\FTPClient.exe
+c:\users\alex\documents\visual studio 2012\Projects\FTPClient\FTPClient\bin\Debug\FTPClient.pdb
+c:\users\alex\documents\visual studio 2012\Projects\FTPClient\FTPClient\obj\Debug\FTPClient.csprojResolveAssemblyReference.cache
+c:\users\alex\documents\visual studio 2012\Projects\FTPClient\FTPClient\obj\Debug\FTPClient.exe
+c:\users\alex\documents\visual studio 2012\Projects\FTPClient\FTPClient\obj\Debug\FTPClient.pdb
+C:\Users\alex\Documents\Visual Studio 2012\Projects\FTPStaubliClient\FTPClient\bin\Debug\FTPClient.exe.config
+C:\Users\alex\Documents\Visual Studio 2012\Projects\FTPStaubliClient\FTPClient\bin\Debug\FTPClient.exe
+C:\Users\alex\Documents\Visual Studio 2012\Projects\FTPStaubliClient\FTPClient\bin\Debug\FTPClient.pdb
+C:\Users\alex\Documents\Visual Studio 2012\Projects\FTPStaubliClient\FTPClient\obj\Debug\FTPClient.csprojResolveAssemblyReference.cache
+C:\Users\alex\Documents\Visual Studio 2012\Projects\FTPStaubliClient\FTPClient\obj\Debug\FTPClient.exe
+C:\Users\alex\Documents\Visual Studio 2012\Projects\FTPStaubliClient\FTPClient\obj\Debug\FTPClient.pdb
