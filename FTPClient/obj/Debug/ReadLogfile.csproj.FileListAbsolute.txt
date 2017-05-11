@@ -1,6 +1,0 @@
-C:\Users\alex\Documents\Visual Studio 2012\Projects\FTPStaubliClient\FTPClient\bin\Debug\ReadLogFile.exe.config
-C:\Users\alex\Documents\Visual Studio 2012\Projects\FTPStaubliClient\FTPClient\bin\Debug\ReadLogFile.exe
-C:\Users\alex\Documents\Visual Studio 2012\Projects\FTPStaubliClient\FTPClient\bin\Debug\ReadLogFile.pdb
-C:\Users\alex\Documents\Visual Studio 2012\Projects\FTPStaubliClient\FTPClient\obj\Debug\ReadLogFile.exe
-C:\Users\alex\Documents\Visual Studio 2012\Projects\FTPStaubliClient\FTPClient\obj\Debug\ReadLogFile.pdb
-C:\Users\alex\Documents\Visual Studio 2012\Projects\FTPStaubliClient\FTPClient\obj\Debug\ReadLogfile.csprojResolveAssemblyReference.cache
