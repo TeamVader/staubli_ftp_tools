@@ -9,3 +9,4 @@ C:\Users\alex\Documents\Visual Studio 2012\Projects\FTPStaubliClient\ResetSafety
 C:\Users\alex\Documents\Visual Studio 2012\Projects\FTPStaubliClient\ResetSafetyFault\obj\Debug\ResetSafetyFault.pdb
 C:\Users\alex\Documents\Visual Studio 2012\Projects\FTPStaubliClient\ResetSafetyFault\bin\Debug\ResetSafetyFault.exe
 C:\Users\alex\Documents\Visual Studio 2012\Projects\FTPStaubliClient\ResetSafetyFault\bin\Debug\ResetSafetyFault.pdb
+C:\Users\alex\Documents\Visual Studio 2012\Projects\FTPStaubliClient\ResetSafetyFault\obj\Debug\ResetSafetyFault.csprojResolveAssemblyReference.cache
