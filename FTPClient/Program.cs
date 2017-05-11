@@ -50,8 +50,7 @@ namespace FTPClient
                     result.Append(StaticText.header + Environment.NewLine);
                     while ((line = reader.ReadLine())!=null)
                     {
-                        
-                        // strContent.Add(reader.ReadLine());
+                     
                       result.Append(string.Format(@"41860806845.6366;2;1;64;1;""{0}"";;;;;;;;""07.05.2017 19:56:51"";"""";""""", line) + Environment.NewLine);
                       logtext.Append(line + Environment.NewLine);
                     }
