@@ -1,0 +1,6 @@
+*.obj
+*.exe
+*.pdb
+*.user
+*.aps
+*.pch

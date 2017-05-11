@@ -27,33 +27,41 @@ namespace FTPClient
                 {
                     File.Delete(ftp_connection.Path + ftp_connection.Filename);
                 }
+                if (File.Exists(ftp_connection.Path + "errors.log"))
+                {
+                    File.Delete(ftp_connection.Path + "errors.log");
+                }
                 Console.WriteLine(string.Format("New Connection to IP : {0}", ftp_connection.IP));
                 Console.WriteLine(string.Format("Username : {0} , Password : {1}", ftp_connection.Username, ftp_connection.Password));
                 Console.WriteLine(string.Format("Datapath : {0} , Filename : {1}", ftp_connection.Path, ftp_connection.Filename));
                 FtpWebRequest request = (FtpWebRequest)WebRequest.Create("ftp://" + ftp_connection.IP + "//log/errors.log");
                 request.Method = WebRequestMethods.Ftp.DownloadFile;
-                string result = "";
+                StringBuilder result = new StringBuilder();
+                StringBuilder logtext = new StringBuilder();
+                string line ="";
                 // This example assumes the FTP site uses anonymous logon.
                 request.Credentials = new NetworkCredential(ftp_connection.Username, ftp_connection.Password);
-
+                
                 using (FtpWebResponse response = (FtpWebResponse)request.GetResponse())
 
                 using (Stream responseStream = response.GetResponseStream())
                 using (StreamReader reader = new StreamReader(responseStream))
                 {
-                    result += StaticText.header + Environment.NewLine;
-                    while (!reader.EndOfStream)
+                    result.Append(StaticText.header + Environment.NewLine);
+                    while ((line = reader.ReadLine())!=null)
                     {
+                        
                         // strContent.Add(reader.ReadLine());
-                        result += string.Format(@"41860806845.6366;2;1;64;1;""{0}"";;;;;;;;""07.05.2017 19:56:51"";"""";""""", reader.ReadLine()) + Environment.NewLine;
+                      result.Append(string.Format(@"41860806845.6366;2;1;64;1;""{0}"";;;;;;;;""07.05.2017 19:56:51"";"""";""""", line) + Environment.NewLine);
+                      logtext.Append(line + Environment.NewLine);
                     }
                     Console.WriteLine("Download Complete, status {0}", response.StatusDescription);
 
-                    result += StaticText.end + Environment.NewLine;
-
+                    result.Append(StaticText.end + Environment.NewLine);
+                    
                 }
-                File.WriteAllText(ftp_connection.Path + ftp_connection.Filename, result);
-
+                File.WriteAllText(ftp_connection.Path + ftp_connection.Filename, result.ToString());
+                File.WriteAllText(ftp_connection.Path + "errors.log", logtext.ToString());
                 DisplayRainbow(@"Woooooooow ... rainbows everywhere ... and a unicorn O_o o_O !!!
                                                     /
                                                   .7
