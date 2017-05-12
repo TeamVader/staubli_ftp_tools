@@ -48,6 +48,7 @@ namespace FTPClient
                         writer.WriteElementString("Pwd", "spec_cal");
                         writer.WriteElementString("Path", @"C:\Logs\");
                         writer.WriteElementString("Filename", "Log.csv");
+                        writer.WriteElementString("MsgClass", "64");
                         writer.WriteEndElement();
 
 
@@ -89,6 +90,7 @@ namespace FTPClient
                             FTP_Connection.Password = ftpConnection["Pwd"].InnerText;
                             FTP_Connection.Path = ftpConnection["Path"].InnerText;
                             FTP_Connection.Filename = ftpConnection["Filename"].InnerText;
+                            FTP_Connection.MsgClass = ftpConnection["MsgClass"].InnerText;
                             // Console.WriteLine(WifiNetwork["SSID"].InnerText + WifiNetwork["Key"].InnerText + WifiNetwork["DHCPorSTATIC"].InnerText + WifiNetwork["StaticIP"].InnerText);
                         }
 
@@ -151,15 +153,16 @@ namespace FTPClient
             string _pwd;
             string _path;
             string _filename;
+            string _msgclass;
 
-
-            public Connection(string ip, string username, string pwd,string filename,string path)
+            public Connection(string ip, string username, string pwd,string filename,string path,string msgclass)
             {
                 this. _ip = ip;
                 this._username = username;
                 this._pwd = pwd;
                 this._filename = filename;
                 this._path = path;
+                this._msgclass = msgclass;
             }
 
             public string IP { set { _ip = value; } get { return _ip; } }
@@ -167,7 +170,7 @@ namespace FTPClient
             public string Password { set { _pwd = value; }  get { return _pwd; } }
             public string Path { set { _path = value; } get { return _path; } }
             public string Filename { set { _filename = value; } get { return _filename; } }
-
+            public string MsgClass { set { _msgclass = value; } get { return _msgclass; } }
         }
 
     }

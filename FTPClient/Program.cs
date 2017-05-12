@@ -11,11 +11,13 @@ namespace FTPClient
 {
     class Program
     {
+        public static string msgclass;
+
         static void Main(string[] args)
         {
             Console.SetWindowSize(Math.Min(80, Console.LargestWindowWidth),Math.Min(60, Console.LargestWindowHeight));
             // Get the object used to communicate with the server.
-            XML_Functions.Connection ftp_connection = new XML_Functions.Connection("", "", "", "", "");
+            XML_Functions.Connection ftp_connection = new XML_Functions.Connection("", "", "", "", "","");
 
 
             try
@@ -39,6 +41,7 @@ namespace FTPClient
                 StringBuilder result = new StringBuilder();
                 StringBuilder logtext = new StringBuilder();
                 string line ="";
+                msgclass = ftp_connection.MsgClass;
                 // This example assumes the FTP site uses anonymous logon.
                 request.Credentials = new NetworkCredential(ftp_connection.Username, ftp_connection.Password);
                 
@@ -51,7 +54,7 @@ namespace FTPClient
                     while ((line = reader.ReadLine())!=null)
                     {
                      
-                      result.Append(string.Format(@"41860806845.6366;2;1;64;1;""{0}"";;;;;;;;""07.05.2017 19:56:51"";"""";""""", line) + Environment.NewLine);
+                      result.Append(string.Format(@"41860806845.6366;2;1;{1};1;""{0}"";;;;;;;;""07.05.2017 19:56:51"";"""";""""", line,msgclass) + Environment.NewLine);
                       logtext.Append(line + Environment.NewLine);
                     }
                     Console.WriteLine("Download Complete, status {0}", response.StatusDescription);
@@ -115,7 +118,7 @@ namespace FTPClient
                 String status = ((FtpWebResponse)e.Response).StatusDescription;
                 status = status.Replace(System.Environment.NewLine, "");
                 result += StaticText.header + Environment.NewLine;
-                result += string.Format(@"41860806845.6366;2;1;64;1;""{0}"";;;;;;;;""07.05.2017 19:56:51"";"""";""""", status) + Environment.NewLine;
+                result += string.Format(@"41860806845.6366;2;1;{1};1;""{0}"";;;;;;;;""07.05.2017 19:56:51"";"""";""""", status,msgclass) + Environment.NewLine;
                 result += StaticText.end + Environment.NewLine;
                 File.WriteAllText(ftp_connection.Path + ftp_connection.Filename, result);
 
