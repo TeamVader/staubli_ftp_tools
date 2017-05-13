@@ -108,7 +108,7 @@ namespace FastBackup
                     }
                    
                 }
-                // disconnect! good bye!
+                
                 client.Disconnect();
                 watch.Stop();
                 Console.WriteLine(string.Format("Benchmark : {0}", watch.ElapsedMilliseconds));
