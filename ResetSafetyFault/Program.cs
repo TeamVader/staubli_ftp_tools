@@ -46,13 +46,13 @@ namespace ResetSafetyFault
 
                 foreach (String file in files)
                 {
-                    if(client.FileExists(file))
+                    if (client.FileExists(file))
                     {
-                    client.DeleteFile(file);
-                    Console.WriteLine(file + " deleted");
+                        client.DeleteFile(file);
+                        Console.WriteLine(file + " deleted");
                     }
                 }
-                
+
                 client.Disconnect();
                 DisplayRainbow(@"Woooooooow ... rainbows everywhere ... and a unicorn O_o o_O !!!
                                                     /
@@ -105,11 +105,12 @@ namespace ResetSafetyFault
             }
             catch (Exception e)
             {
-               
+
 
                 Console.Write(e.Message);
                 //Console.ReadKey();
             }
+           
         }
 
         static readonly ConsoleColor[] colors = { ConsoleColor.Magenta, ConsoleColor.Blue, ConsoleColor.Cyan, ConsoleColor.Green, ConsoleColor.Yellow, ConsoleColor.Red };

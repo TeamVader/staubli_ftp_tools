@@ -2,23 +2,34 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace FastBackup
 {
     class Program
     {
+        [STAThread]
         static void Main(string[] args)
         {
+           
             Console.SetWindowSize(Math.Min(80, Console.LargestWindowWidth), Math.Min(60, Console.LargestWindowHeight));
             // Get the object used to communicate with the server.
             XML_Functions.Connection ftp_connection = new XML_Functions.Connection("", "", "", "", "");
 
             List<string> files = new List<string>();
             List<string> directories = new List<string>();
+            List<string> rootfolders = new List<string>();
+            rootfolders.Add("/usr");
+            rootfolders.Add("/log");
+            rootfolders.Add("/sys");
+
+            string backupname = DateTime.Now.ToString("Y-yyyy M-MM D-dd hh_mm");
             try
             {
 
@@ -41,80 +52,62 @@ namespace FastBackup
                 Stopwatch watch = new Stopwatch();
                 watch.Start();
                 // get a list of files and directories in the "/htdocs" folder
-                foreach (FtpListItem item in client.GetListing("/usr"))
+                foreach (string rootfolder in rootfolders)
                 {
-
-                    // if this is a file
-                    if (item.Type == FtpFileSystemObjectType.File)
+                    directories.Add(rootfolder);
+                    foreach (FtpListItem item in client.GetListing(rootfolder))
                     {
-
-                        files.Add(item.FullName);
-
-                    }
-                    if (item.Type == FtpFileSystemObjectType.Directory)
-                    {
-                        directories.Add(item.FullName);
-                        //Subdirectories
-                        foreach (FtpListItem subitem in client.GetListing(item.FullName))
+                        if (item.Type == FtpFileSystemObjectType.File)
                         {
-                            if (subitem.Type == FtpFileSystemObjectType.File)
-                            {
 
-                                files.Add(subitem.FullName);
+                            files.Add(item.FullName);
 
-                            }
-                            if (subitem.Type == FtpFileSystemObjectType.Directory)
-                            {
-                                
-                             directories.Add(subitem.FullName);
-                                foreach (FtpListItem subsubitem in client.GetListing(subitem.FullName))
-                                {
-                                    if (subsubitem.Type == FtpFileSystemObjectType.File)
-                                    {
-
-                                        files.Add(subsubitem.FullName);
-
-                                    }
-                                }
-                            }
+                        }
+                        if (item.Type == FtpFileSystemObjectType.Directory)
+                        {
+                            directories.Add(item.FullName);
+                            SearchFiles.getfiles(files, directories, item.FullName, client);
                         }
                     }
-
-
-
                 }
 
                 //Create Directories
-                foreach(string directory in directories)
+                foreach (string directory in directories)
                 {
-                   
-                    System.IO.Directory.CreateDirectory(ftp_connection.Path+directory);
+                    //Console.WriteLine(ftp_connection.Path + "\\" + backupname + "\\" + directory);
+                    System.IO.Directory.CreateDirectory(ftp_connection.Path + "\\" + backupname + "\\" + directory);
                 }
-                string temp="";
-                string path="";
+                string temp = "";
+                string path = "";
                 //Put Files in to
-                foreach (string file in files)
+                using (var progress = new ProgressBar())
                 {
-                    temp = file.Split('/').Last();
-                    path = file.Substring(0,file.Length-temp.Length-1);
+                    for (int i = 0; i < files.Count; i++)
+                    {
+                        temp = files[i].Split('/').Last();
+                        path = files[i].Substring(0, files[i].Length - temp.Length - 1);
 
-                    foreach(string directory in directories)
-                    {
-                    if(string.Equals(path,directory))
-                    {
-                    client.DownloadFile(ftp_connection.Path+path+"\\"+temp, file);
-                 
+                        foreach (string directory in directories)
+                        {
+                            if (string.Equals(path, directory))
+                            {
+                                client.DownloadFile(ftp_connection.Path + "\\" + backupname + "\\" + path + "\\" + temp, files[i]);
+                                progress.Report((double)i / files.Count);
+                            }
+                        }
+
                     }
-                    }
-                   
+
+
                 }
-                
+
+                Console.WriteLine("Backup in Folder : " + backupname + " created");
                 client.Disconnect();
                 watch.Stop();
                 Console.WriteLine(string.Format("Benchmark : {0}", watch.ElapsedMilliseconds));
                 Unicorn.show();
-                Console.ReadKey();
-
+                Thread.Sleep(500);
+                // Console.ReadKey();
             }
             catch (Exception e)
             {
@@ -123,5 +116,7 @@ namespace FastBackup
             }
 
         }
+
+        
     }
 }

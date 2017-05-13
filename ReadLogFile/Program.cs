@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FluentFTP;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -15,9 +16,9 @@ namespace FTPClient
 
         static void Main(string[] args)
         {
-            Console.SetWindowSize(Math.Min(80, Console.LargestWindowWidth),Math.Min(60, Console.LargestWindowHeight));
+            Console.SetWindowSize(Math.Min(80, Console.LargestWindowWidth), Math.Min(60, Console.LargestWindowHeight));
             // Get the object used to communicate with the server.
-            XML_Functions.Connection ftp_connection = new XML_Functions.Connection("", "", "", "", "","");
+            XML_Functions.Connection ftp_connection = new XML_Functions.Connection("", "", "", "", "", "");
 
 
             try
@@ -36,34 +37,45 @@ namespace FTPClient
                 Console.WriteLine(string.Format("New Connection to IP : {0}", ftp_connection.IP));
                 Console.WriteLine(string.Format("Username : {0} , Password : {1}", ftp_connection.Username, ftp_connection.Password));
                 Console.WriteLine(string.Format("Datapath : {0} , Filename : {1}", ftp_connection.Path, ftp_connection.Filename));
-                FtpWebRequest request = (FtpWebRequest)WebRequest.Create("ftp://" + ftp_connection.IP + "//log/errors.log");
-                request.Method = WebRequestMethods.Ftp.DownloadFile;
+
                 StringBuilder result = new StringBuilder();
-                StringBuilder logtext = new StringBuilder();
-                string line ="";
+
+                string line = "";
                 msgclass = ftp_connection.MsgClass;
                 // This example assumes the FTP site uses anonymous logon.
-                request.Credentials = new NetworkCredential(ftp_connection.Username, ftp_connection.Password);
-                
-                using (FtpWebResponse response = (FtpWebResponse)request.GetResponse())
 
-                using (Stream responseStream = response.GetResponseStream())
-                using (StreamReader reader = new StreamReader(responseStream))
+                // create an FTP client
+                FtpClient client = new FtpClient(ftp_connection.IP);
+
+                // if you don't specify login credentials, we use the "anonymous" user account
+                client.Credentials = new NetworkCredential(ftp_connection.Username, ftp_connection.Password);
+
+                // begin connecting to the server
+                client.Connect();
+
+                client.DownloadFile(ftp_connection.Path + "errors.log", "//log/errors.log");
+
+                client.Disconnect();
+
+                if (File.Exists(ftp_connection.Path + "errors.log"))
                 {
-                    result.Append(StaticText.header + Environment.NewLine);
-                    while ((line = reader.ReadLine())!=null)
+                    using (StreamReader reader = new StreamReader(ftp_connection.Path + "errors.log"))
                     {
-                     
-                      result.Append(string.Format(@"41860806845.6366;2;1;{1};1;""{0}"";;;;;;;;""07.05.2017 19:56:51"";"""";""""", line,msgclass) + Environment.NewLine);
-                      logtext.Append(line + Environment.NewLine);
-                    }
-                    Console.WriteLine("Download Complete, status {0}", response.StatusDescription);
+                        result.Append(StaticText.header + Environment.NewLine);
+                        while ((line = reader.ReadLine()) != null)
+                        {
 
-                    result.Append(StaticText.end + Environment.NewLine);
-                    
+                            result.Append(string.Format(@"41860806845.6366;2;1;{1};1;""{0}"";;;;;;;;""07.05.2017 19:56:51"";"""";""""", line, msgclass) + Environment.NewLine);
+
+                        }
+                        // Console.WriteLine("Download Complete, status {0}", response.StatusDescription);
+
+                        result.Append(StaticText.end + Environment.NewLine);
+
+                    }
                 }
+
                 File.WriteAllText(ftp_connection.Path + ftp_connection.Filename, result.ToString());
-                File.WriteAllText(ftp_connection.Path + "errors.log", logtext.ToString());
                 DisplayRainbow(@"Woooooooow ... rainbows everywhere ... and a unicorn O_o o_O !!!
                                                     /
                                                   .7
@@ -112,17 +124,16 @@ namespace FTPClient
                 //File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "\\errors.log", reader.ReadToEnd());
 
             }
-            catch (WebException e)
+            catch (Exception e)
             {
                 String result = "";
-                String status = ((FtpWebResponse)e.Response).StatusDescription;
-                status = status.Replace(System.Environment.NewLine, "");
+               
                 result += StaticText.header + Environment.NewLine;
-                result += string.Format(@"41860806845.6366;2;1;{1};1;""{0}"";;;;;;;;""07.05.2017 19:56:51"";"""";""""", status,msgclass) + Environment.NewLine;
+                result += string.Format(@"41860806845.6366;2;1;{1};1;""{0}"";;;;;;;;""07.05.2017 19:56:51"";"""";""""", e.Message, msgclass) + Environment.NewLine;
                 result += StaticText.end + Environment.NewLine;
                 File.WriteAllText(ftp_connection.Path + ftp_connection.Filename, result);
 
-                Console.Write(status);
+                Console.Write(e.Message);
 
             }
         }
