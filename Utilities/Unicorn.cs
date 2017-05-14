@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace FastBackup
+namespace Utilities
 {
-    class Unicorn
+    public class Unicorn
     {
         public static void show()
         {

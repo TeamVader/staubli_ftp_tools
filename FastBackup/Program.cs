@@ -9,25 +9,23 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Utilities;
 
 namespace FastBackup
 {
     class Program
     {
-        [STAThread]
+      
         static void Main(string[] args)
         {
            
             Console.SetWindowSize(Math.Min(100, Console.LargestWindowWidth), Math.Min(60, Console.LargestWindowHeight));
             // Get the object used to communicate with the server.
-            XML_Functions.Connection ftp_connection = new XML_Functions.Connection("", "", "", "", "");
+            XML_Functions.Connection ftp_connection = new XML_Functions.Connection();
 
             List<string> files = new List<string>();
             List<string> directories = new List<string>();
-            List<string> rootfolders = new List<string>();
-            rootfolders.Add("/usr");
-            rootfolders.Add("/log");
-            rootfolders.Add("/sys");
+            
 
             string backupname = DateTime.Now.ToString("Y-yyyy M-MM D-dd hh_mm");
             try
@@ -52,7 +50,7 @@ namespace FastBackup
                 Stopwatch watch = new Stopwatch();
                 watch.Start();
                 // get a list of files and directories in the "/htdocs" folder
-                foreach (string rootfolder in rootfolders)
+                foreach (string rootfolder in Staubli_Folder_Structure.paths.rootfolders)
                 {
                     directories.Add(rootfolder);
                     foreach (FtpListItem item in client.GetListing(rootfolder))

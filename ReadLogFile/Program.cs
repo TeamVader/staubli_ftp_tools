@@ -7,6 +7,7 @@ using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Utilities;
 
 namespace FTPClient
 {
@@ -18,7 +19,7 @@ namespace FTPClient
         {
             Console.SetWindowSize(Math.Min(80, Console.LargestWindowWidth), Math.Min(60, Console.LargestWindowHeight));
             // Get the object used to communicate with the server.
-            XML_Functions.Connection ftp_connection = new XML_Functions.Connection("", "", "", "", "", "");
+            XML_Functions.Connection ftp_connection = new XML_Functions.Connection();
 
 
             try
@@ -53,7 +54,7 @@ namespace FTPClient
                 // begin connecting to the server
                 client.Connect();
 
-                client.DownloadFile(ftp_connection.Path + "errors.log", "//log/errors.log");
+                client.DownloadFile(ftp_connection.Path + "errors.log", Staubli_Folder_Structure.files.logfile_path);
 
                 client.Disconnect();
 
@@ -76,48 +77,8 @@ namespace FTPClient
                 }
 
                 File.WriteAllText(ftp_connection.Path + ftp_connection.Filename, result.ToString());
-                DisplayRainbow(@"Woooooooow ... rainbows everywhere ... and a unicorn O_o o_O !!!
-                                                    /
-                                                  .7
-                                       \       , //
-                                       |\.--._/|//
-                                      /\ ) ) ).'/
-                                     /(  \  // /
-                                    /(   J`((_/ \
-                                   / ) | _\     /
-                                  /|)  \  eJ    L
-                                 |  \ L \   L   L
-                                /  \  J  `. J   L
-                                |  )   L   \/   \
-                               /  \    J   (\   /
-             _....___         |  \      \   \```
-      ,.._.-'        '''--...-||\     -. \   \
-    .'.=.'                    `         `.\ [ Y
-   /   /                                  \]  J
-  Y / Y                                    Y   L
-  | | |          \                         |   L
-  | | |           Y                        A  J
-  |   I           |                       /I\ /
-  |    \          I             \        ( |]/|
-  J     \         /._           /        -tI/ |
-   L     )       /   /'-------'J           `'-:.
-   J   .'      ,'  ,' ,     \   `'-.__          \
-    \ T      ,'  ,'   )\    /|        ';'---7   /
-     \|    ,'L  Y...-' / _.' /         \   /   /
-      J   Y  |  J    .'-'   /         ,--.(   /
-       L  |  J   L -'     .'         /  |    /\
-       |  J.  L  J     .-;.-/       |    \ .' /
-       J   L`-J   L____,.-'`        |  _.-'   |
-        L  J   L  J                  ``  J    |
-        J   L  |   L                     J    |
-         L  J  L    \                    L    \
-         |   L  ) _.'\                    ) _.'\
-         L    \('`    \                  ('`    \
-          ) _.'\`-....'                   `-....'
-         ('`    \
-          `-.___/   sk");
-
-                Thread.Sleep(1000);
+                Unicorn.show();
+                Thread.Sleep(500);
                 // File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "\\errors.log", result);
 
                 // FileStream txtfile = File.Create(@"C:\test.txt");
@@ -138,27 +99,7 @@ namespace FTPClient
             }
         }
 
-        static readonly ConsoleColor[] colors = { ConsoleColor.Magenta, ConsoleColor.Blue, ConsoleColor.Cyan, ConsoleColor.Green, ConsoleColor.Yellow, ConsoleColor.Red };
-
-        static void DisplayRainbow(string text)
-        {
-            ConsoleColor originalColor = Console.ForegroundColor;
-
-            try
-            {
-                int colorIndex = 0;
-                for (int i = 0; i < text.Length; ++i)
-                {
-                    Console.ForegroundColor = colors[colorIndex++ % colors.Length];
-
-                    Console.Write(text[i]);
-                }
-            }
-            finally
-            {
-                Console.ForegroundColor = originalColor;
-            }
-        }
+        
 
 
     }

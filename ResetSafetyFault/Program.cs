@@ -8,6 +8,7 @@ using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Utilities;
 
 namespace ResetSafetyFault
 {
@@ -17,8 +18,8 @@ namespace ResetSafetyFault
         {
             Console.SetWindowSize(Math.Min(80, Console.LargestWindowWidth), Math.Min(60, Console.LargestWindowHeight));
             // Get the object used to communicate with the server.
-            XML_Functions.Connection ftp_connection = new XML_Functions.Connection("", "", "", "", "");
-
+            XML_Functions.Connection ftp_connection = new XML_Functions.Connection();
+            
 
             try
             {
@@ -54,48 +55,8 @@ namespace ResetSafetyFault
                 }
 
                 client.Disconnect();
-                DisplayRainbow(@"Woooooooow ... rainbows everywhere ... and a unicorn O_o o_O !!!
-                                                    /
-                                                  .7
-                                       \       , //
-                                       |\.--._/|//
-                                      /\ ) ) ).'/
-                                     /(  \  // /
-                                    /(   J`((_/ \
-                                   / ) | _\     /
-                                  /|)  \  eJ    L
-                                 |  \ L \   L   L
-                                /  \  J  `. J   L
-                                |  )   L   \/   \
-                               /  \    J   (\   /
-             _....___         |  \      \   \```
-      ,.._.-'        '''--...-||\     -. \   \
-    .'.=.'                    `         `.\ [ Y
-   /   /                                  \]  J
-  Y / Y                                    Y   L
-  | | |          \                         |   L
-  | | |           Y                        A  J
-  |   I           |                       /I\ /
-  |    \          I             \        ( |]/|
-  J     \         /._           /        -tI/ |
-   L     )       /   /'-------'J           `'-:.
-   J   .'      ,'  ,' ,     \   `'-.__          \
-    \ T      ,'  ,'   )\    /|        ';'---7   /
-     \|    ,'L  Y...-' / _.' /         \   /   /
-      J   Y  |  J    .'-'   /         ,--.(   /
-       L  |  J   L -'     .'         /  |    /\
-       |  J.  L  J     .-;.-/       |    \ .' /
-       J   L`-J   L____,.-'`        |  _.-'   |
-        L  J   L  J                  ``  J    |
-        J   L  |   L                     J    |
-         L  J  L    \                    L    \
-         |   L  ) _.'\                    ) _.'\
-         L    \('`    \                  ('`    \
-          ) _.'\`-....'                   `-....'
-         ('`    \
-          `-.___/   sk");
-
-                Thread.Sleep(1000);
+                Unicorn.show();
+                Thread.Sleep(500);
                 //Console.ReadKey();
                 // File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "\\errors.log", result);
 
@@ -113,27 +74,6 @@ namespace ResetSafetyFault
            
         }
 
-        static readonly ConsoleColor[] colors = { ConsoleColor.Magenta, ConsoleColor.Blue, ConsoleColor.Cyan, ConsoleColor.Green, ConsoleColor.Yellow, ConsoleColor.Red };
-
-        static void DisplayRainbow(string text)
-        {
-            ConsoleColor originalColor = Console.ForegroundColor;
-
-            try
-            {
-                int colorIndex = 0;
-                for (int i = 0; i < text.Length; ++i)
-                {
-                    Console.ForegroundColor = colors[colorIndex++ % colors.Length];
-
-                    Console.Write(text[i]);
-                }
-            }
-            finally
-            {
-                Console.ForegroundColor = originalColor;
-            }
-        }
-
+       
     }
 }
