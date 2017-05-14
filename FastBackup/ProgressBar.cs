@@ -5,14 +5,14 @@ using System.Threading;
 /// <summary>
 /// An ASCII progress bar
 /// </summary>
-public class ProgressBar : IDisposable, IProgress<double>
+public class ProgressBar : IDisposable, IProgress<double>, IProgress<string>
 {
-    private const int blockCount = 10;
+    private const int blockCount = 20;
     private readonly TimeSpan animationInterval = TimeSpan.FromSeconds(1.0 / 8);
     private const string animation = @"|/-\";
 
     private readonly Timer timer;
-
+    private string filename = "";
     private double currentProgress = 0;
     private string currentText = string.Empty;
     private bool disposed = false;
@@ -36,6 +36,12 @@ public class ProgressBar : IDisposable, IProgress<double>
         // Make sure value is in [0..1] range
         value = Math.Max(0, Math.Min(1, value));
         Interlocked.Exchange(ref currentProgress, value);
+        
+    }
+
+    public void Report(string name)
+    {
+        Interlocked.Exchange(ref filename, name);
     }
 
     private void TimerHandler(object state)
@@ -46,10 +52,11 @@ public class ProgressBar : IDisposable, IProgress<double>
 
             int progressBlockCount = (int)(currentProgress * blockCount);
             int percent = (int)(currentProgress * 100);
-            string text = string.Format("[{0}{1}] {2,3}% {3}",
+            string text = string.Format("[{0}{1}] {2,3}% {3} {4}",
                 new string('#', progressBlockCount), new string('-', blockCount - progressBlockCount),
                 percent,
-                animation[animationIndex++ % animation.Length]);
+                animation[animationIndex++ % animation.Length],
+                filename);
             UpdateText(text);
 
             ResetTimer();

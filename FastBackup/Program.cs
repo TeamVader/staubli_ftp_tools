@@ -18,7 +18,7 @@ namespace FastBackup
         static void Main(string[] args)
         {
            
-            Console.SetWindowSize(Math.Min(80, Console.LargestWindowWidth), Math.Min(60, Console.LargestWindowHeight));
+            Console.SetWindowSize(Math.Min(100, Console.LargestWindowWidth), Math.Min(60, Console.LargestWindowHeight));
             // Get the object used to communicate with the server.
             XML_Functions.Connection ftp_connection = new XML_Functions.Connection("", "", "", "", "");
 
@@ -93,6 +93,7 @@ namespace FastBackup
                             {
                                 client.DownloadFile(ftp_connection.Path + "\\" + backupname + "\\" + path + "\\" + temp, files[i]);
                                 progress.Report((double)i / files.Count);
+                                progress.Report(files[i].Substring(0,Math.Min(files[i].Length,65)));
                             }
                         }
 
